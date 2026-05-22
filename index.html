@@ -516,7 +516,7 @@ async function callClaude(prompt){
   if(imgB64){msgs.push({role:'user',content:[{type:'image',source:{type:'base64',media_type:imgType,data:imgB64}},{type:'text',text:prompt}]});}
   else{msgs.push({role:'user',content:prompt});}
   const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-5-20250929',max_tokens:1000,messages:msgs})});
+    body:JSON.stringify({model:'claude-sonnet-4-5-20250929',max_tokens:4000,messages:msgs})});
   const data=await resp.json();
   if(data.error)throw new Error(data.error.message||'API error');
   return data.content.map(b=>b.text||'').join('');
@@ -647,10 +647,11 @@ async function step5Next(){
   goStep(6);
   document.getElementById('prog6').style.display='block';
   document.getElementById('pf6').style.width='50%';
-  const prompt=`Sos experto en fotografía de producto para MercadoLibre Argentina y prompts para ImageFX (Google).${imgB64?' Imagen adjunta.':''}
-Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} Dolor: ${dolor.titulo}
-12 descripciones estratégicas para Meli. Bloques: 1-3 presentación fondo blanco, 4-5 dimensiones, 6-8 uso calibrado al perfil, 9-11 infografías, 12 cierre confianza.
-SOLO JSON: {"imagenes":[{"num":1,"bloque":"[nombre]","titulo":"[nombre corto]","prompt_imagefx":"[prompt en inglés detallado]","nota":"[tip en español]"},...12 items]}`;
+  const prod6=document.getElementById('descInput').value;
+  const prompt=`Generá exactamente 12 prompts de imagen para producto en MercadoLibre Argentina.
+Producto: "${prod6}" Perfil: ${perfil.nombre}
+Cada prompt en inglés, máximo 12 palabras. SOLO JSON válido completo sin texto extra:
+{"imagenes":[{"num":1,"titulo":"Portada","prompt_imagefx":"product on pure white background, front view, studio lighting","nota":"Fondo blanco obligatorio"},{"num":2,"titulo":"Lateral","prompt_imagefx":"product side view, white background, sharp focus","nota":"Mostrar perfil"},{"num":3,"titulo":"Detalle","prompt_imagefx":"close up product texture, white background, macro","nota":"Resaltar calidad"},{"num":4,"titulo":"Medidas","prompt_imagefx":"product with ruler showing size, white background","nota":"Tamaño real"},{"num":5,"titulo":"En mano","prompt_imagefx":"hand holding product showing scale, neutral background","nota":"Escala humana"},{"num":6,"titulo":"Uso real 1","prompt_imagefx":"person using product in daily life, natural light","nota":"Uso en contexto real"},{"num":7,"titulo":"Uso real 2","prompt_imagefx":"product in use showing benefit, lifestyle photography","nota":"Segundo contexto"},{"num":8,"titulo":"Resultado","prompt_imagefx":"happy person showing positive result after product use","nota":"El después"},{"num":9,"titulo":"Beneficios","prompt_imagefx":"product infographic 3 benefits, white minimal design","nota":"Infografía beneficios"},{"num":10,"titulo":"Antes y después","prompt_imagefx":"split image problem vs solution with product, clean design","nota":"Contraste dolor solución"},{"num":11,"titulo":"Especificaciones","prompt_imagefx":"product specs chart with icons, white background","nota":"Datos técnicos"},{"num":12,"titulo":"Garantía","prompt_imagefx":"product with quality guarantee badge, professional design","nota":"Confianza final"}]}`;
   try{
     const raw=await callClaude(prompt);
     pState.imagenes=JSON.parse(raw.replace(/```json|```/g,'').trim());
