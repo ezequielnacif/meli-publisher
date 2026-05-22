@@ -516,7 +516,7 @@ async function callClaude(prompt){
   if(imgB64){msgs.push({role:'user',content:[{type:'image',source:{type:'base64',media_type:imgType,data:imgB64}},{type:'text',text:prompt}]});}
   else{msgs.push({role:'user',content:prompt});}
   const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-5-20251001',max_tokens:1000,messages:msgs})});
+    body:JSON.stringify({model:'claude-sonnet-4-5-20250929',max_tokens:1000,messages:msgs})});
   const data=await resp.json();
   if(data.error)throw new Error(data.error.message||'API error');
   return data.content.map(b=>b.text||'').join('');
