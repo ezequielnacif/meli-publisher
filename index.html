@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meli Publisher Pro</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#ffffff;--bg2:#f8f9fa;--bg3:#f1f3f5;
+  --text:#1a1a1a;--text2:#6b7280;--text3:#9ca3af;
+  --border:#e5e7eb;--border2:#d1d5db;
+  --green:#1D9E75;--green-dark:#0F6E56;--green-bg:#E1F5EE;--green-text:#085041;
+  --amber-bg:#FAEEDA;--amber-text:#633806;
+  --red-bg:#FCEBEB;--red-text:#A32D2D;
+  --radius:8px;--radius-lg:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--text);min-height:100vh}
+.container{max-width:800px;margin:0 auto;padding:1.5rem 1rem}
+.header{text-align:center;margin-bottom:1.5rem;padding:1.5rem;background:var(--bg);border-radius:var(--radius-lg);border:1px solid var(--border)}
+.header h1{font-size:20px;font-weight:600;color:var(--text);margin-bottom:4px}
+.header p{font-size:13px;color:var(--text2)}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--green-bg);color:var(--green-text);font-weight:500;margin-left:6px;vertical-align:middle}
+.main-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.25rem;background:var(--bg);border-radius:var(--radius-lg) var(--radius-lg) 0 0;overflow:hidden;overflow-x:auto}
+.main-tab{font-size:12px;padding:10px 14px;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0;background:none;border-top:none;border-left:none;border-right:none}
+.main-tab.active{color:var(--green-dark);border-bottom-color:var(--green);font-weight:500}
+.main-tab i{font-size:14px}
+.content{background:var(--bg);border-radius:0 0 var(--radius-lg) var(--radius-lg);padding:1.25rem;border:1px solid var(--border);border-top:none}
+.section{display:none}.section.active{display:block}
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:1.25rem;overflow-x:auto;padding-bottom:4px}
+.step-item{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.step-dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text2);background:var(--bg);transition:all .2s;flex-shrink:0}
+.step-dot.active{background:var(--green);border-color:var(--green);color:white}
+.step-dot.done{background:var(--green-bg);border-color:#5DCAA5;color:var(--green-dark)}
+.step-label{font-size:10px;color:var(--text3);white-space:nowrap}
+.step-label.active{color:var(--green-dark);font-weight:500}
+.step-conn{width:16px;height:1px;background:var(--border);margin:0 3px;flex-shrink:0}
+.panel{display:none}.panel.active{display:block}
+.sec-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px}
+.sec-sub{font-size:12px;color:var(--text2);margin-bottom:1rem}
+.flabel{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;display:block}
+input[type=text],input[type=number],select,textarea{width:100%;font-size:13px;padding:9px 12px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green)}
+textarea{resize:vertical;min-height:72px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.btn{padding:9px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit}
+.btn:hover{background:var(--bg2)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-g{padding:9px 16px;border-radius:var(--radius);border:none;background:var(--green);color:white;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit}
+.btn-g:hover{background:var(--green-dark)}
+.btn-g:disabled{opacity:.4;cursor:not-allowed}
+.card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:.875rem 1.125rem;background:var(--bg);margin-bottom:10px}
+.card-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.card-hd i{font-size:16px;color:var(--green)}
+.card-hd span{font-size:13px;font-weight:500;color:var(--text)}
+.rtext{font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap}
+.sel-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px;cursor:pointer;transition:all .15s;background:var(--bg)}
+.sel-card:hover{background:var(--bg2)}
+.sel-card.selected{border:2px solid var(--green);background:var(--green-bg)}
+.sel-card .ct{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.sel-card.selected .ct{color:var(--green-text)}
+.sel-card .cb{font-size:11px;color:var(--text2);line-height:1.5}
+.sel-card.selected .cb{color:var(--green-dark)}
+.sbadge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;margin-bottom:5px;background:var(--green-bg);color:var(--green-text);font-weight:500}
+.title-opt{border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;margin-bottom:6px;display:flex;align-items:flex-start;gap:6px;cursor:pointer;font-size:12px;color:var(--text);transition:background .1s}
+.title-opt:hover{background:var(--bg2)}
+.tnum{font-size:10px;font-weight:500;color:var(--text3);min-width:14px;margin-top:1px}
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.img-card{border:1px solid var(--border);border-radius:var(--radius);padding:9px;background:var(--bg)}
+.img-num{font-size:10px;font-weight:500;color:var(--green-dark);background:var(--green-bg);display:inline-block;padding:1px 6px;border-radius:20px;margin-bottom:3px}
+.img-t{font-size:11px;font-weight:600;color:var(--text);margin-bottom:3px}
+.img-p{font-size:11px;color:var(--text2);line-height:1.45}
+.progwrap{margin:.75rem 0}
+.progbar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.progfill{height:100%;background:var(--green);transition:width .4s}
+.proglbl{font-size:11px;color:var(--text2);margin-top:3px}
+.bbar{display:flex;align-items:center;gap:8px;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.metric-card{background:var(--bg2);border-radius:var(--radius);padding:10px 12px}
+.metric-label{font-size:11px;color:var(--text2);margin-bottom:3px}
+.metric-val{font-size:19px;font-weight:600;color:var(--text)}
+.metric-val.green{color:var(--green-dark)}.metric-val.red{color:#A32D2D}.metric-val.amber{color:#854F0B}
+.cost-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:.75rem}
+.cost-table th{text-align:left;font-weight:500;font-size:11px;color:var(--text2);padding:6px 8px;border-bottom:1px solid var(--border)}
+.cost-table td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text)}
+.cost-table tr:last-child td{border-bottom:none}
+.cost-table .trow td{font-weight:600;background:var(--bg2)}
+.srow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.slbl{font-size:12px;color:var(--text2);min-width:155px}
+.sval{font-size:12px;font-weight:600;color:var(--text);min-width:38px;text-align:right}
+input[type=range]{flex:1;accent-color:var(--green)}
+.pwarn{border:1px solid #EF9F27;border-radius:var(--radius);padding:8px 12px;background:var(--amber-bg);font-size:12px;color:var(--amber-text);margin-top:8px}
+.hbanner{border:1px solid #5DCAA5;background:var(--green-bg);border-radius:var(--radius);padding:9px 13px;margin-bottom:.875rem;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--green-text);cursor:pointer}
+.hbanner i{font-size:15px;color:var(--green);flex-shrink:0}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);padding:9px 11px;margin-bottom:7px;background:var(--bg)}
+.faq-q{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.faq-a{font-size:12px;color:var(--text2);line-height:1.6}
+.faq-copy{font-size:11px;color:var(--green-dark);cursor:pointer;margin-top:3px}
+.chk-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.chk-item:last-child{border-bottom:none}
+.chk-box{width:18px;height:18px;border-radius:4px;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;background:var(--bg)}
+.chk-box.checked{background:var(--green);border-color:var(--green)}
+.chk-box i{font-size:12px;color:white}
+.chk-title{font-size:12px;color:var(--text);font-weight:500;margin-bottom:2px}
+.chk-title.checked{color:var(--text3);text-decoration:line-through}
+.chk-desc{font-size:11px;color:var(--text2)}
+.cb-obl{font-size:10px;padding:1px 6px;border-radius:20px;margin-left:5px;background:var(--red-bg);color:var(--red-text)}
+.cb-imp{font-size:10px;padding:1px 6px;border-radius:20px;margin-left:5px;background:var(--amber-bg);color:var(--amber-text)}
+.cb-rec{font-size:10px;padding:1px 6px;border-radius:20px;margin-left:5px;background:var(--green-bg);color:var(--green-text)}
+.score-wrap{display:flex;align-items:center;gap:11px;margin-bottom:1rem;padding:11px;background:var(--bg2);border-radius:var(--radius)}
+.score-num{font-size:26px;font-weight:600;color:var(--text)}
+.score-bar-wrap{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.score-bar-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;background:var(--bg2);color:var(--text2);margin-right:3px;margin-bottom:3px;cursor:pointer}
+.vtab-bar{display:flex;gap:5px;margin-bottom:.875rem;flex-wrap:wrap}
+.vtab{font-size:11px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);cursor:pointer;color:var(--text2);background:var(--bg);transition:all .15s}
+.vtab.active{background:var(--green-bg);color:var(--green-dark);border-color:#5DCAA5}
+.upload-zone{border:1px dashed var(--border2);border-radius:var(--radius-lg);width:170px;height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;background:var(--bg2);flex-shrink:0}
+.upload-zone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.upload-zone i{font-size:24px;color:var(--text3);margin-bottom:6px}
+.upload-zone span{font-size:11px;color:var(--text2);text-align:center;padding:0 10px}
+.up-row{display:flex;gap:12px;margin-bottom:.875rem;align-items:flex-start}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:white;font-size:12px;padding:8px 14px;border-radius:var(--radius);opacity:0;transition:opacity .2s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr}.img-grid{grid-template-columns:1fr 1fr}.up-row{flex-direction:column}.upload-zone{width:100%}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Meli Publisher Pro <span class="badge">MercadoLibre Argentina</span></h1>
+    <p>Generador completo de publicaciones para dropshipping — títulos, descripción, imágenes, video UGC y más.</p>
+  </div>
+
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="switchMain('publicacion')"><i class="ti ti-file-text"></i> Publicación</button>
+    <button class="main-tab" onclick="switchMain('pricing')"><i class="ti ti-calculator"></i> Pricing</button>
+    <button class="main-tab" onclick="switchMain('competencia')"><i class="ti ti-chart-bar"></i> Competencia</button>
+    <button class="main-tab" onclick="switchMain('faq')"><i class="ti ti-message-question"></i> FAQ</button>
+    <button class="main-tab" onclick="switchMain('lanzamiento')"><i class="ti ti-rocket"></i> Lanzamiento</button>
+    <button class="main-tab" onclick="switchMain('checklist')"><i class="ti ti-checklist"></i> Checklist</button>
+  </div>
+
+  <div class="content">
+
+    <div id="sec-publicacion" class="section active">
+      <div class="stepper">
+        <div class="step-item"><div class="step-dot active" id="dot-1">1</div><span class="step-label active" id="lbl-1">Producto</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-2">2</div><span class="step-label" id="lbl-2">Perfil</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-3">3</div><span class="step-label" id="lbl-3">Dolor</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-4">4</div><span class="step-label" id="lbl-4">Títulos</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-5">5</div><span class="step-label" id="lbl-5">Descripción</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-6">6</div><span class="step-label" id="lbl-6">Imágenes</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-7">7</div><span class="step-label" id="lbl-7">Video</span></div>
+        <div class="step-conn"></div>
+        <div class="step-item"><div class="step-dot" id="dot-8">8</div><span class="step-label" id="lbl-8">Exportar</span></div>
+      </div>
+
+      <div id="panel-1" class="panel active">
+        <div class="sec-title">Cargá el producto</div>
+        <div class="sec-sub">Foto + descripción básica. Los datos se transfieren a todos los módulos.</div>
+        <div class="up-row">
+          <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleImg(event)">
+            <i class="ti ti-camera"></i><span>Subir foto del producto</span>
+          </div>
+          <div style="flex:1">
+            <label class="flabel">Descripción del proveedor</label>
+            <textarea id="descInput" placeholder="Ej: Mini foam roller 33cm, superficie acanalada, núcleo ABS. Para recuperación muscular." style="min-height:90px"></textarea>
+            <div class="g2" style="margin-top:8px">
+              <div>
+                <label class="flabel" style="margin-top:6px">Categoría</label>
+                <select id="catInput" onchange="syncG()">
+                  <option value="">Auto-detectar</option>
+                  <option value="deportes">Deportes y fitness</option>
+                  <option value="mascotas">Mascotas</option>
+                  <option value="hogar">Hogar y cocina</option>
+                  <option value="herramientas">Herramientas</option>
+                  <option value="outdoor">Outdoor y camping</option>
+                  <option value="belleza">Salud y belleza</option>
+                  <option value="electronica">Electrónica</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div>
+                <label class="flabel" style="margin-top:6px">Precio ref. mercado (ARS)</label>
+                <input type="number" id="precioInput" placeholder="Ej: 18000" oninput="syncG()">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bbar">
+          <button class="btn-g" onclick="step1Next()"><i class="ti ti-sparkles"></i> Generar perfiles de comprador</button>
+        </div>
+      </div>
+
+      <div id="panel-2" class="panel">
+        <div class="sec-title">Seleccioná el perfil de comprador</div>
+        <div class="sec-sub">El copy se calibra al perfil elegido. Podés generar múltiples variantes.</div>
+        <div class="progwrap" id="prog2" style="display:none"><div class="progbar"><div class="progfill" id="pf2" style="width:0%"></div></div><div class="proglbl" id="pl2">Analizando...</div></div>
+        <div id="perfiles-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s2" onclick="step2Next()" disabled><i class="ti ti-arrow-right"></i> Continuar</button>
+        </div>
+      </div>
+
+      <div id="panel-3" class="panel">
+        <div class="sec-title">Seleccioná el dolor específico</div>
+        <div class="sec-sub">Dolores calibrados al perfil elegido.</div>
+        <div class="progwrap" id="prog3" style="display:none"><div class="progbar"><div class="progfill" id="pf3" style="width:0%"></div></div><div class="proglbl">Generando dolores...</div></div>
+        <div id="dolores-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(2)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s3" onclick="step3Next()" disabled><i class="ti ti-arrow-right"></i> Generar títulos</button>
+        </div>
+      </div>
+
+      <div id="panel-4" class="panel">
+        <div class="sec-title">Títulos SEO optimizados</div>
+        <div class="sec-sub">5 opciones calibradas. Clic para copiar.</div>
+        <div class="progwrap" id="prog4" style="display:none"><div class="progbar"><div class="progfill" id="pf4" style="width:0%"></div></div><div class="proglbl">Generando títulos...</div></div>
+        <div id="titulos-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(3)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s4" onclick="step4Next()" disabled><i class="ti ti-arrow-right"></i> Generar descripción</button>
+        </div>
+      </div>
+
+      <div id="panel-5" class="panel">
+        <div class="sec-title">Descripción lista para Meli</div>
+        <div class="sec-sub">Copy completo calibrado al perfil y dolor.</div>
+        <div class="progwrap" id="prog5" style="display:none"><div class="progbar"><div class="progfill" id="pf5" style="width:0%"></div></div><div class="proglbl">Redactando...</div></div>
+        <div id="desc-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(4)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s5" onclick="step5Next()" disabled><i class="ti ti-arrow-right"></i> Generar imágenes</button>
+        </div>
+      </div>
+
+      <div id="panel-6" class="panel">
+        <div class="sec-title">12 prompts de imagen</div>
+        <div class="sec-sub">Listos para ImageFX (Google). Clic para copiar cada prompt.</div>
+        <div class="progwrap" id="prog6" style="display:none"><div class="progbar"><div class="progfill" id="pf6" style="width:0%"></div></div><div class="proglbl">Generando prompts...</div></div>
+        <div id="imagenes-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(5)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s6" onclick="step6Next()" disabled><i class="ti ti-arrow-right"></i> Generar video UGC</button>
+        </div>
+      </div>
+
+      <div id="panel-7" class="panel">
+        <div class="sec-title">Brief de video UGC</div>
+        <div class="sec-sub">5 escenas con prompts para Veo 3 (Google). Clic para copiar.</div>
+        <div class="progwrap" id="prog7" style="display:none"><div class="progbar"><div class="progfill" id="pf7" style="width:0%"></div></div><div class="proglbl">Creando brief...</div></div>
+        <div id="video-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(6)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn-g" id="btn-s7" onclick="step7Next()" disabled><i class="ti ti-file-text"></i> Ver resumen y exportar</button>
+        </div>
+      </div>
+
+      <div id="panel-8" class="panel">
+        <div class="sec-title">Publicación completa</div>
+        <div class="sec-sub">Resumen de variantes generadas.</div>
+        <div class="vtab-bar" id="variants-bar"></div>
+        <div id="summary-container"></div>
+        <div class="bbar">
+          <button class="btn" onclick="goStep(7)"><i class="ti ti-arrow-left"></i> Atrás</button>
+          <button class="btn" onclick="newVariant()"><i class="ti ti-plus"></i> Nueva variante</button>
+          <button class="btn-g" onclick="exportTXT()"><i class="ti ti-download"></i> Exportar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-pricing" class="section">
+      <div class="sec-title">Calculadora de precio de venta</div>
+      <div class="sec-sub">Ingresá el costo y ajustá los porcentajes. El precio se calcula automáticamente.</div>
+      <div class="g3" style="margin-bottom:.875rem">
+        <div><label class="flabel">Producto</label><input type="text" id="g-producto" placeholder="Ej: Mini foam roller" oninput="syncG()"></div>
+        <div><label class="flabel">Categoría</label>
+          <select id="g-categoria" onchange="syncG()">
+            <option value="">Seleccioná</option>
+            <option value="deportes">Deportes y fitness</option>
+            <option value="mascotas">Mascotas</option>
+            <option value="hogar">Hogar y cocina</option>
+            <option value="herramientas">Herramientas</option>
+            <option value="outdoor">Outdoor y camping</option>
+            <option value="belleza">Salud y belleza</option>
+            <option value="electronica">Electrónica</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div><label class="flabel">Precio mercado (ARS)</label><input type="number" id="g-mercado" placeholder="Ej: 18000" oninput="syncG();calcPrecio()"></div>
+      </div>
+      <div class="g2" style="margin-bottom:.875rem">
+        <div><label class="flabel">Costo proveedor (ARS)</label><input type="number" id="costoInput" placeholder="Ej: 8500" oninput="calcPrecio()"></div>
+        <div><label class="flabel">Tipo publicación</label>
+          <select id="g-tipo" onchange="syncG();calcPrecio()">
+            <option value="clasica">Clásica (13% comisión)</option>
+            <option value="premium">Premium (16% comisión)</option>
+          </select>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:.875rem">
+        <div class="card-hd"><i class="ti ti-adjustments"></i><span>Estructura de costos — editá según tu operación</span></div>
+        <div class="srow"><span class="slbl">Comisión Meli</span><input type="range" id="s-comision" min="5" max="20" value="13" step="1" oninput="syncSlider('comision');calcPrecio()"><span class="sval" id="v-comision">13%</span></div>
+        <div class="srow"><span class="slbl">Envío</span><input type="range" id="s-envio" min="0" max="20" value="8" step="1" oninput="syncSlider('envio');calcPrecio()"><span class="sval" id="v-envio">8%</span></div>
+        <div class="srow"><span class="slbl">Publicidad</span><input type="range" id="s-publicidad" min="0" max="15" value="5" step="1" oninput="syncSlider('publicidad');calcPrecio()"><span class="sval" id="v-publicidad">5%</span></div>
+        <div class="srow"><span class="slbl">Promociones</span><input type="range" id="s-promo" min="0" max="20" value="5" step="1" oninput="syncSlider('promo');calcPrecio()"><span class="sval" id="v-promo">5%</span></div>
+        <div class="srow"><span class="slbl">IVA sobre comisión</span><input type="range" id="s-iva" min="0" max="5" value="3" step="1" oninput="syncSlider('iva');calcPrecio()"><span class="sval" id="v-iva">3%</span></div>
+        <div class="srow"><span class="slbl">Ganancia objetivo</span><input type="range" id="s-ganancia" min="5" max="60" value="25" step="1" oninput="syncSlider('ganancia');calcPrecio()"><span class="sval" id="v-ganancia">25%</span></div>
+      </div>
+      <div id="precio-result" style="display:none">
+        <div class="g4" style="margin-bottom:.875rem">
+          <div class="metric-card"><div class="metric-label">Precio de venta</div><div class="metric-val green" id="m-pventa">—</div></div>
+          <div class="metric-card"><div class="metric-label">Ganancia neta</div><div class="metric-val" id="m-ganancia">—</div></div>
+          <div class="metric-card"><div class="metric-label">Margen real</div><div class="metric-val" id="m-margen">—</div></div>
+          <div class="metric-card"><div class="metric-label">Total costos</div><div class="metric-val red" id="m-costos">—</div></div>
+        </div>
+        <div class="card" style="margin-bottom:.875rem">
+          <div class="card-hd"><i class="ti ti-receipt"></i><span>Desglose</span></div>
+          <table class="cost-table" id="desglose-table"></table>
+        </div>
+        <div id="precio-warning" style="display:none" class="pwarn"></div>
+        <div class="card" style="margin-bottom:.875rem">
+          <div class="card-hd"><i class="ti ti-bulb"></i><span>Recomendación automática</span></div>
+          <div id="recomendacion-text" class="rtext"></div>
+        </div>
+        <div id="goto-comp-banner" class="hbanner" style="display:none" onclick="switchMain('competencia')">
+          <i class="ti ti-arrow-right"></i><div><strong>Precio calculado.</strong> Ir a Competencia — datos ya cargados.</div>
+        </div>
+      </div>
+      <div id="precio-empty" style="text-align:center;padding:2rem;color:var(--text3);font-size:13px">
+        <i class="ti ti-calculator" style="font-size:28px;display:block;margin-bottom:8px"></i>Ingresá el costo del proveedor para calcular
+      </div>
+    </div>
+
+    <div id="sec-competencia" class="section">
+      <div class="sec-title">Análisis de competencia</div>
+      <div class="sec-sub">Analizá el mercado y compará tu precio contra la competencia.</div>
+      <div id="comp-hbanner" class="hbanner" style="display:none"><i class="ti ti-check"></i><div id="comp-htext"></div></div>
+      <div style="margin-bottom:.875rem"><label class="flabel">Producto</label><textarea id="comp-prod" placeholder="Ej: Mini foam roller 33cm para recuperación muscular"></textarea></div>
+      <div class="g2" style="margin-bottom:.875rem">
+        <div><label class="flabel">Categoría</label>
+          <select id="comp-cat">
+            <option value="">Seleccioná</option>
+            <option value="deportes">Deportes y fitness</option>
+            <option value="mascotas">Mascotas</option>
+            <option value="hogar">Hogar y cocina</option>
+            <option value="herramientas">Herramientas</option>
+            <option value="outdoor">Outdoor y camping</option>
+            <option value="belleza">Salud y belleza</option>
+            <option value="electronica">Electrónica</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div><label class="flabel">Tu precio calculado (ARS)</label><input type="number" id="comp-precio" placeholder="Se completa desde Pricing"></div>
+      </div>
+      <button class="btn-g" id="btn-comp" onclick="runCompetencia()"><i class="ti ti-search"></i> Analizar competencia</button>
+      <div class="progwrap" id="prog-comp" style="display:none"><div class="progbar"><div class="progfill" id="pf-comp" style="width:0%"></div></div><div class="proglbl">Analizando mercado...</div></div>
+      <div id="comp-result" style="margin-top:.875rem"></div>
+      <div id="goto-launch-banner" class="hbanner" style="display:none;margin-top:.875rem" onclick="switchMain('lanzamiento')">
+        <i class="ti ti-arrow-right"></i><div><strong>Análisis listo.</strong> Ir a Lanzamiento — datos cargados.</div>
+      </div>
+    </div>
+
+    <div id="sec-faq" class="section">
+      <div class="sec-title">Preguntas frecuentes + respuestas</div>
+      <div class="sec-sub">10 preguntas reales con respuestas listas para copiar.</div>
+      <div id="faq-hbanner" class="hbanner" style="display:none"><i class="ti ti-check"></i><div id="faq-htext"></div></div>
+      <div style="margin-bottom:.875rem"><label class="flabel">Producto</label><textarea id="faq-prod" placeholder="Ej: Mini foam roller 33cm para recuperación muscular"></textarea></div>
+      <div class="g2" style="margin-bottom:.875rem">
+        <div><label class="flabel">Perfil comprador</label><input type="text" id="faq-perfil" placeholder="Ej: Deportista amateur 25-40 años"></div>
+        <div><label class="flabel">Objeción principal</label><input type="text" id="faq-objecion" placeholder="Ej: ¿Es de buena calidad?"></div>
+      </div>
+      <button class="btn-g" id="btn-faq" onclick="runFaq()"><i class="ti ti-sparkles"></i> Generar preguntas y respuestas</button>
+      <div class="progwrap" id="prog-faq" style="display:none"><div class="progbar"><div class="progfill" id="pf-faq" style="width:0%"></div></div><div class="proglbl">Generando preguntas...</div></div>
+      <div id="faq-result" style="margin-top:.875rem"></div>
+    </div>
+
+    <div id="sec-lanzamiento" class="section">
+      <div class="sec-title">Estrategia de lanzamiento</div>
+      <div class="sec-sub">Plan de 30 días para dropshipping en Meli Argentina.</div>
+      <div id="launch-hbanner" class="hbanner" style="display:none"><i class="ti ti-check"></i><div id="launch-htext"></div></div>
+      <div style="margin-bottom:.875rem"><label class="flabel">Producto</label><textarea id="launch-prod" placeholder="Ej: Mini foam roller 33cm para recuperación muscular"></textarea></div>
+      <div class="g3" style="margin-bottom:.875rem">
+        <div><label class="flabel">Categoría</label>
+          <select id="launch-cat">
+            <option value="">Seleccioná</option>
+            <option value="deportes">Deportes y fitness</option>
+            <option value="mascotas">Mascotas</option>
+            <option value="hogar">Hogar y cocina</option>
+            <option value="herramientas">Herramientas</option>
+            <option value="outdoor">Outdoor y camping</option>
+            <option value="belleza">Salud y belleza</option>
+            <option value="electronica">Electrónica</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div><label class="flabel">Precio de venta (ARS)</label><input type="number" id="launch-precio" placeholder="Se completa desde Pricing"></div>
+        <div><label class="flabel">Tipo publicación</label>
+          <select id="launch-tipo"><option value="clasica">Clásica</option><option value="premium">Premium</option></select>
+        </div>
+      </div>
+      <button class="btn-g" id="btn-launch" onclick="runLanzamiento()"><i class="ti ti-rocket"></i> Generar estrategia</button>
+      <div class="progwrap" id="prog-launch" style="display:none"><div class="progbar"><div class="progfill" id="pf-launch" style="width:0%"></div></div><div class="proglbl">Creando plan...</div></div>
+      <div id="launch-result" style="margin-top:.875rem"></div>
+    </div>
+
+    <div id="sec-checklist" class="section">
+      <div class="sec-title">Checklist antes de publicar</div>
+      <div class="sec-sub">18 puntos clave. Tildá cada uno al completarlo.</div>
+      <div class="score-wrap">
+        <div><div class="score-num" id="chk-score">0/18</div><div style="font-size:11px;color:var(--text2)">completado</div></div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" id="chk-bar" style="width:0%"></div></div>
+        <div id="chk-status" style="font-size:12px;color:var(--text2);min-width:90px;text-align:right">Sin iniciar</div>
+      </div>
+      <div id="checklist-container"></div>
+      <div style="margin-top:.875rem;display:flex;gap:8px">
+        <button class="btn" onclick="resetChecklist()"><i class="ti ti-refresh"></i> Reiniciar</button>
+        <button class="btn-g" onclick="exportChecklist()"><i class="ti ti-download"></i> Exportar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Copiado</div>
+
+<script>
+const API_URL='/api/claude';
+let imgB64=null,imgType='image/jpeg';
+let gData={producto:'',categoria:'',mercado:0,pventa:0,tipo:'clasica'};
+let pState={perfilIdx:null,dolorIdx:null,perfiles:[],dolores:[],titulos:null,descripcion:'',imagenes:null,video:null};
+let variants=[],curVariant=0;
+
+function switchMain(id){
+  document.querySelectorAll('.main-tab').forEach((t,i)=>{
+    const ids=['publicacion','pricing','competencia','faq','lanzamiento','checklist'];
+    t.classList.toggle('active',ids[i]===id);
+  });
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  if(id==='competencia')fillComp();
+  if(id==='faq')fillFaq();
+  if(id==='lanzamiento')fillLaunch();
+}
+
+function syncG(){
+  gData.producto=document.getElementById('g-producto').value.trim();
+  gData.categoria=document.getElementById('g-categoria').value;
+  gData.mercado=parseFloat(document.getElementById('g-mercado').value)||0;
+  gData.tipo=document.getElementById('g-tipo').value;
+  const c=gData.tipo==='premium'?16:13;
+  document.getElementById('s-comision').value=c;
+  document.getElementById('v-comision').textContent=c+'%';
+}
+
+function fillComp(){
+  const p=gData.producto||document.getElementById('descInput').value.trim();
+  if(p){document.getElementById('comp-prod').value=p;}
+  if(gData.categoria){const s=document.getElementById('comp-cat');for(let o of s.options)if(o.value===gData.categoria){s.value=gData.categoria;break;}}
+  if(gData.pventa>0){
+    document.getElementById('comp-precio').value=gData.pventa;
+    document.getElementById('comp-hbanner').style.display='flex';
+    document.getElementById('comp-htext').innerHTML=`<strong>Datos desde Pricing:</strong> "${p}", precio $${gData.pventa.toLocaleString('es-AR')} ARS.`;
+  }
+}
+
+function fillFaq(){
+  const p=gData.producto||document.getElementById('descInput').value.trim();
+  if(p){document.getElementById('faq-prod').value=p;document.getElementById('faq-hbanner').style.display='flex';document.getElementById('faq-htext').innerHTML=`<strong>Producto cargado:</strong> "${p}".`;}
+}
+
+function fillLaunch(){
+  const p=gData.producto||document.getElementById('descInput').value.trim();
+  if(p)document.getElementById('launch-prod').value=p;
+  if(gData.categoria){const s=document.getElementById('launch-cat');for(let o of s.options)if(o.value===gData.categoria){s.value=gData.categoria;break;}}
+  if(gData.pventa>0)document.getElementById('launch-precio').value=gData.pventa;
+  if(gData.tipo)document.getElementById('launch-tipo').value=gData.tipo;
+  if(p||gData.pventa>0){document.getElementById('launch-hbanner').style.display='flex';document.getElementById('launch-htext').innerHTML=`<strong>Datos desde Pricing:</strong> ${p?'"'+p+'"':''} ${gData.pventa>0?'· $'+gData.pventa.toLocaleString('es-AR')+' ARS':''}.`;}
+}
+
+function goStep(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  for(let i=1;i<=8;i++){
+    document.getElementById('dot-'+i).className='step-dot'+(i===n?' active':i<n?' done':'');
+    document.getElementById('lbl-'+i).className='step-label'+(i===n?' active':'');
+  }
+}
+
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800);}
+function copyText(txt){navigator.clipboard.writeText(txt).then(showToast);}
+function syncSlider(id){document.getElementById('v-'+id).textContent=document.getElementById('s-'+id).value+'%';}
+
+function handleImg(e){
+  const f=e.target.files[0];if(!f)return;
+  imgType=f.type||'image/jpeg';
+  const r=new FileReader();
+  r.onload=ev=>{imgB64=ev.target.result.split(',')[1];const z=document.getElementById('uploadZone');if(z)z.innerHTML=`<img src="${ev.target.result}" alt="producto">`;};
+  r.readAsDataURL(f);
+}
+
+async function callClaude(prompt){
+  const msgs=[];
+  if(imgB64){msgs.push({role:'user',content:[{type:'image',source:{type:'base64',media_type:imgType,data:imgB64}},{type:'text',text:prompt}]});}
+  else{msgs.push({role:'user',content:prompt});}
+  const resp=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:msgs})});
+  const data=await resp.json();
+  if(data.error)throw new Error(data.error.message||'API error');
+  return data.content.map(b=>b.text||'').join('');
+}
+
+async function step1Next(){
+  const desc=document.getElementById('descInput').value.trim();
+  if(!desc&&!imgB64){alert('Ingresá al menos una descripción.');return;}
+  gData.producto=gData.producto||desc.substring(0,50);
+  gData.categoria=document.getElementById('catInput').value;
+  gData.mercado=parseFloat(document.getElementById('precioInput').value)||0;
+  goStep(2);
+  document.getElementById('prog2').style.display='block';
+  document.getElementById('pf2').style.width='50%';
+  document.getElementById('pl2').textContent='Generando perfiles de comprador...';
+  const prompt=`Sos especialista en buyer personas para MercadoLibre Argentina.${imgB64?' Imagen adjunta.':''}
+Producto: "${desc}" Categoría: ${gData.categoria||'detectala'}
+Generá 3 perfiles de comprador. SOLO JSON válido sin texto extra:
+{"perfiles":[{"nombre":"[arquetipo]","edad":"[rango]","tag":"[1 palabra]","descripcion":"[2 oraciones]","busqueda":"[3-5 palabras]"},{"nombre":"...","edad":"...","tag":"...","descripcion":"...","busqueda":"..."},{"nombre":"...","edad":"...","tag":"...","descripcion":"...","busqueda":"..."}]}`;
+  try{
+    const raw=await callClaude(prompt);
+    const data=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    pState.perfiles=data.perfiles;renderPerfiles();
+  }catch(e){document.getElementById('perfiles-container').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}. Intentá de nuevo.</div>`;}
+  document.getElementById('prog2').style.display='none';
+}
+
+function renderPerfiles(){
+  const c=document.getElementById('perfiles-container');c.innerHTML='';
+  const g=document.createElement('div');g.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem';
+  pState.perfiles.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='sel-card';
+    d.innerHTML=`<div class="sbadge">${p.tag}</div><div class="ct">${p.nombre}</div><div style="font-size:10px;color:var(--text3);margin-bottom:3px">${p.edad}</div><div class="cb">${p.descripcion}</div><div style="margin-top:5px;font-size:10px;color:var(--text3)">Busca: <em>${p.busqueda}</em></div>`;
+    d.onclick=()=>{document.querySelectorAll('#perfiles-container .sel-card').forEach(x=>x.classList.remove('selected'));d.classList.add('selected');pState.perfilIdx=i;document.getElementById('btn-s2').disabled=false;};
+    g.appendChild(d);
+  });
+  c.appendChild(g);
+}
+
+async function step2Next(){
+  if(pState.perfilIdx===null)return;
+  const perfil=pState.perfiles[pState.perfilIdx];
+  goStep(3);
+  document.getElementById('prog3').style.display='block';
+  document.getElementById('pf3').style.width='50%';
+  const prompt=`Sos experto en psicología del consumidor para e-commerce argentino.
+Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} — ${perfil.descripcion}
+Generá 3 dolores/motivaciones para ESTE perfil. SOLO JSON:
+{"dolores":[{"titulo":"[frase corta max 8 palabras]","situacion":"[momento exacto 1 oración]","deseo":"[lo que quiere 1 oración]","objecion":"[mayor duda]"},{"titulo":"...","situacion":"...","deseo":"...","objecion":"..."},{"titulo":"...","situacion":"...","deseo":"...","objecion":"..."}]}`;
+  try{
+    const raw=await callClaude(prompt);
+    const data=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    pState.dolores=data.dolores;renderDolores();
+  }catch(e){document.getElementById('dolores-container').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}. Intentá de nuevo.</div>`;}
+  document.getElementById('prog3').style.display='none';
+}
+
+function renderDolores(){
+  const c=document.getElementById('dolores-container');c.innerHTML='';
+  const g=document.createElement('div');g.style.cssText='display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:.875rem';
+  pState.dolores.forEach((d,i)=>{
+    const el=document.createElement('div');el.className='sel-card';
+    el.innerHTML=`<div class="ct">${d.titulo}</div><div style="margin:5px 0;font-size:11px;color:var(--text2)"><strong>Situación:</strong> ${d.situacion}</div><div style="font-size:11px;color:var(--text2)"><strong>Desea:</strong> ${d.deseo}</div><div style="margin-top:4px;font-size:10px;color:var(--text3)"><strong>Objeción:</strong> ${d.objecion}</div>`;
+    el.onclick=()=>{document.querySelectorAll('#dolores-container .sel-card').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');pState.dolorIdx=i;document.getElementById('btn-s3').disabled=false;};
+    g.appendChild(el);
+  });
+  c.appendChild(g);
+}
+
+async function step3Next(){
+  if(pState.dolorIdx===null)return;
+  const perfil=pState.perfiles[pState.perfilIdx];
+  const dolor=pState.dolores[pState.dolorIdx];
+  goStep(4);
+  document.getElementById('prog4').style.display='block';
+  document.getElementById('pf4').style.width='50%';
+  const prompt=`Sos experto en SEO de MercadoLibre Argentina.${imgB64?' Imagen adjunta.':''}
+Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} Dolor: ${dolor.titulo}
+Generá 5 títulos para Meli Argentina. Reglas: 50-60 caracteres, keyword al inicio, sin oferta/gratis/mejor/único/!
+SOLO JSON: {"titulos":[{"texto":"[título]","chars":N,"keyword":"[kw]","motivo":"[por qué funciona max 8 palabras]"},{"texto":"...","chars":N,"keyword":"...","motivo":"..."},{"texto":"...","chars":N,"keyword":"...","motivo":"..."},{"texto":"...","chars":N,"keyword":"...","motivo":"..."},{"texto":"...","chars":N,"keyword":"...","motivo":"..."}],"recomendado":N}`;
+  try{
+    const raw=await callClaude(prompt);
+    pState.titulos=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderTitulos(pState.titulos);
+    document.getElementById('btn-s4').disabled=false;
+  }catch(e){document.getElementById('titulos-container').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog4').style.display='none';
+}
+
+function renderTitulos(data){
+  const c=document.getElementById('titulos-container');c.innerHTML='';
+  data.titulos.forEach((t,i)=>{
+    const d=document.createElement('div');d.className='title-opt';
+    const isRec=data.recomendado===(i+1);
+    d.innerHTML=`<span class="tnum">${i+1}</span><span style="flex:1">${t.texto}${isRec?` <span style="font-size:10px;background:var(--green-bg);color:var(--green-text);padding:1px 6px;border-radius:20px">recomendado</span>`:''}<br><span style="font-size:10px;color:var(--text3)">${t.chars} chars · ${t.keyword} · ${t.motivo}</span></span><i class="ti ti-copy" style="font-size:14px;color:var(--text3)"></i>`;
+    d.onclick=()=>copyText(t.texto);c.appendChild(d);
+  });
+}
+
+async function step4Next(){
+  const perfil=pState.perfiles[pState.perfilIdx];
+  const dolor=pState.dolores[pState.dolorIdx];
+  goStep(5);
+  document.getElementById('prog5').style.display='block';
+  document.getElementById('pf5').style.width='30%';
+  const prompt=`Sos redactor experto en MercadoLibre Argentina, dropshipping.${imgB64?' Imagen adjunta.':''}
+Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} — ${perfil.descripcion}
+Dolor: ${dolor.titulo} Situación: ${dolor.situacion} Desea: ${dolor.deseo} Objeción: ${dolor.objecion}
+Descripción completa para Meli: apertura conectada al dolor (2-3 oraciones), características (6-8 bullets con ✓), para quién es ideal, especificaciones técnicas, cómo rebatir la objeción, cierre motivador.
+Tono: argentino, claro, honesto. Sin "increíble","el mejor","único".`;
+  const cont=document.getElementById('desc-container');
+  cont.innerHTML='<div class="card"><div class="card-hd"><i class="ti ti-align-left"></i><span>Descripción</span></div><div class="rtext" id="desc-text">Generando...</div></div>';
+  try{
+    document.getElementById('pf5').style.width='80%';
+    const raw=await callClaude(prompt);
+    document.getElementById('desc-text').textContent=raw;
+    pState.descripcion=raw;
+    document.getElementById('btn-s5').disabled=false;
+    const b=document.createElement('button');b.className='btn';b.style.marginTop='8px';
+    b.innerHTML='<i class="ti ti-copy"></i> Copiar descripción';b.onclick=()=>copyText(raw);cont.appendChild(b);
+  }catch(e){document.getElementById('desc-text').textContent='Error: '+e.message;}
+  document.getElementById('prog5').style.display='none';
+}
+
+async function step5Next(){
+  const perfil=pState.perfiles[pState.perfilIdx];
+  const dolor=pState.dolores[pState.dolorIdx];
+  goStep(6);
+  document.getElementById('prog6').style.display='block';
+  document.getElementById('pf6').style.width='50%';
+  const prompt=`Sos experto en fotografía de producto para MercadoLibre Argentina y prompts para ImageFX (Google).${imgB64?' Imagen adjunta.':''}
+Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} Dolor: ${dolor.titulo}
+12 descripciones estratégicas para Meli. Bloques: 1-3 presentación fondo blanco, 4-5 dimensiones, 6-8 uso calibrado al perfil, 9-11 infografías, 12 cierre confianza.
+SOLO JSON: {"imagenes":[{"num":1,"bloque":"[nombre]","titulo":"[nombre corto]","prompt_imagefx":"[prompt en inglés detallado]","nota":"[tip en español]"},...12 items]}`;
+  try{
+    const raw=await callClaude(prompt);
+    pState.imagenes=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderImagenes(pState.imagenes);
+    document.getElementById('btn-s6').disabled=false;
+  }catch(e){document.getElementById('imagenes-container').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog6').style.display='none';
+}
+
+function renderImagenes(data){
+  const c=document.getElementById('imagenes-container');c.innerHTML='';
+  const g=document.createElement('div');g.className='img-grid';
+  data.imagenes.forEach(img=>{
+    const d=document.createElement('div');d.className='img-card';
+    d.innerHTML=`<div class="img-num">${img.num}</div><div class="img-t">${img.titulo}</div><div class="img-p">${img.prompt_imagefx}</div><div style="font-size:10px;color:var(--green-dark);margin-top:3px;cursor:pointer" onclick="copyText('${img.prompt_imagefx.replace(/'/g,"\\'")}')"><i class="ti ti-copy" style="font-size:10px"></i> Copiar prompt</div><div style="font-size:10px;color:var(--text3);margin-top:2px">${img.nota}</div>`;
+    g.appendChild(d);
+  });
+  c.appendChild(g);
+}
+
+async function step6Next(){
+  const perfil=pState.perfiles[pState.perfilIdx];
+  const dolor=pState.dolores[pState.dolorIdx];
+  goStep(7);
+  document.getElementById('prog7').style.display='block';
+  document.getElementById('pf7').style.width='50%';
+  const prompt=`Sos director creativo de UGC para e-commerce argentino y experto en prompts para Veo 3 (Google).${imgB64?' Imagen adjunta.':''}
+Producto: "${document.getElementById('descInput').value}" Perfil: ${perfil.nombre} — ${perfil.descripcion} Dolor: ${dolor.titulo} Desea: ${dolor.deseo}
+Brief video UGC 30 segundos, vertical 9:16, auténtico.
+SOLO JSON: {"brief":{"duracion":"30s","formato":"9:16","tono":"[1 oración]","musica":"[estilo]","hook":"[frase 0-3s en rioplatense]"},"escenas":[{"num":1,"timecode":"0-5s","titulo":"[nombre]","descripcion":"[qué pasa]","dialogo":"[diálogo en rioplatense]","prompt_veo3":"[prompt en inglés para Veo 3]"},{"num":2,"timecode":"5-12s","titulo":"...","descripcion":"...","dialogo":"...","prompt_veo3":"..."},{"num":3,"timecode":"12-20s","titulo":"...","descripcion":"...","dialogo":"...","prompt_veo3":"..."},{"num":4,"timecode":"20-27s","titulo":"...","descripcion":"...","dialogo":"...","prompt_veo3":"..."},{"num":5,"timecode":"27-30s","titulo":"CTA","descripcion":"...","dialogo":"...","prompt_veo3":"..."}]}`;
+  try{
+    const raw=await callClaude(prompt);
+    pState.video=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderVideo(pState.video);
+    document.getElementById('btn-s7').disabled=false;
+  }catch(e){document.getElementById('video-container').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog7').style.display='none';
+}
+
+function renderVideo(data){
+  const c=document.getElementById('video-container');c.innerHTML='';
+  const brief=document.createElement('div');brief.className='card';
+  brief.innerHTML=`<div class="card-hd"><i class="ti ti-video"></i><span>Brief general</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px">
+    <div><span style="color:var(--text3)">Duración:</span> ${data.brief.duracion}</div>
+    <div><span style="color:var(--text3)">Formato:</span> ${data.brief.formato}</div>
+    <div><span style="color:var(--text3)">Tono:</span> ${data.brief.tono}</div>
+    <div><span style="color:var(--text3)">Música:</span> ${data.brief.musica}</div>
+    <div style="grid-column:1/-1"><span style="color:var(--text3)">Hook:</span> <strong style="color:var(--green-text)">"${data.brief.hook}"</strong></div>
+  </div>`;
+  c.appendChild(brief);
+  data.escenas.forEach(s=>{
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="card-hd"><i class="ti ti-player-play"></i><span>Escena ${s.num}: ${s.titulo}</span><span style="margin-left:auto;font-size:10px;color:var(--text3)">${s.timecode}</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:5px">${s.descripcion}</div>
+    <div style="font-size:12px;background:var(--green-bg);color:var(--green-text);padding:6px 10px;border-radius:var(--radius);margin-bottom:5px">"${s.dialogo}"</div>
+    <div style="font-size:11px;color:var(--text3);border:1px solid var(--border);padding:6px 10px;border-radius:var(--radius);cursor:pointer" onclick="copyText('${s.prompt_veo3.replace(/'/g,"\\'")}')">
+      <i class="ti ti-copy" style="font-size:11px"></i> <strong>Prompt Veo 3:</strong> ${s.prompt_veo3}
+    </div>`;
+    c.appendChild(d);
+  });
+}
+
+function step7Next(){
+  const perfil=pState.perfiles[pState.perfilIdx];
+  const dolor=pState.dolores[pState.dolorIdx];
+  variants.push({id:variants.length+1,label:`Variante ${variants.length+1}: ${perfil.nombre}`,perfil,dolor,titulos:pState.titulos,descripcion:pState.descripcion,imagenes:pState.imagenes,video:pState.video});
+  curVariant=variants.length-1;goStep(8);renderSummary();
+}
+
+function renderSummary(){
+  const bar=document.getElementById('variants-bar');bar.innerHTML='';
+  variants.forEach((v,i)=>{
+    const t=document.createElement('div');t.className='vtab'+(i===curVariant?' active':'');
+    t.textContent=v.label;t.onclick=()=>{curVariant=i;renderSummary();};bar.appendChild(t);
+  });
+  const v=variants[curVariant];
+  const tRec=v.titulos&&v.titulos.titulos?v.titulos.titulos[v.titulos.recomendado-1]:null;
+  const c=document.getElementById('summary-container');
+  c.innerHTML=`
+  <div class="card"><div class="card-hd"><i class="ti ti-user"></i><span>Perfil: ${v.perfil.nombre}</span></div>
+    <div style="font-size:12px;color:var(--text2)">${v.perfil.descripcion}</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:4px">Dolor: <strong>${v.dolor.titulo}</strong></div>
+  </div>
+  ${tRec?`<div class="card"><div class="card-hd"><i class="ti ti-text-size"></i><span>Título recomendado</span></div>
+    <div style="font-size:13px;font-weight:600;cursor:pointer" onclick="copyText('${tRec.texto.replace(/'/g,"\\'")}')"><i class="ti ti-copy" style="font-size:12px;margin-right:3px"></i>${tRec.texto}</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:2px">${tRec.chars} chars · ${tRec.keyword}</div></div>`:''}
+  <div class="card"><div class="card-hd"><i class="ti ti-align-left"></i><span>Descripción</span>
+    <button class="btn" style="margin-left:auto;padding:4px 10px;font-size:11px" onclick="copyText(variants[curVariant].descripcion)"><i class="ti ti-copy"></i> Copiar</button></div>
+    <div style="font-size:12px;color:var(--text2);max-height:130px;overflow-y:auto;white-space:pre-wrap">${v.descripcion}</div>
+  </div>`;
+}
+
+function newVariant(){
+  pState.perfilIdx=null;pState.dolorIdx=null;pState.titulos=null;pState.descripcion='';pState.imagenes=null;pState.video=null;
+  ['btn-s2','btn-s3','btn-s4','btn-s5','btn-s6','btn-s7'].forEach(id=>document.getElementById(id).disabled=true);
+  ['perfiles-container','dolores-container','titulos-container','desc-container','imagenes-container','video-container'].forEach(id=>document.getElementById(id).innerHTML='');
+  goStep(2);step1Next();
+}
+
+function exportTXT(){
+  const v=variants[curVariant];if(!v)return;
+  const tRec=v.titulos&&v.titulos.titulos?v.titulos.titulos[v.titulos.recomendado-1]:null;
+  const allT=v.titulos&&v.titulos.titulos?v.titulos.titulos.map((t,i)=>`${i+1}. ${t.texto} (${t.chars} chars)`).join('\n'):'';
+  const imgP=v.imagenes&&v.imagenes.imagenes?v.imagenes.imagenes.map(i=>`Imagen ${i.num} — ${i.titulo}\nPrompt: ${i.prompt_imagefx}\nNota: ${i.nota}`).join('\n\n'):'';
+  const vidE=v.video&&v.video.escenas?v.video.escenas.map(s=>`Escena ${s.num} (${s.timecode}): ${s.titulo}\n${s.descripcion}\nDiálogo: "${s.dialogo}"\nPrompt Veo 3: ${s.prompt_veo3}`).join('\n\n'):'';
+  const txt=`PUBLICACIÓN MERCADOLIBRE — MELI PUBLISHER PRO\n${'='.repeat(48)}\n\nVariante: ${v.label}\nProducto: ${document.getElementById('descInput').value}\n\n--- PERFIL ---\n${v.perfil.nombre} · ${v.perfil.edad}\n${v.perfil.descripcion}\n\n--- DOLOR ---\n${v.dolor.titulo}\n${v.dolor.situacion}\n\n--- TÍTULOS SEO ---\n${allT}\n\nTítulo recomendado: ${tRec?tRec.texto:''}\n\n--- DESCRIPCIÓN COMPLETA ---\n${v.descripcion}\n\n--- 12 PROMPTS DE IMAGEN (ImageFX) ---\n${imgP}\n\n--- BRIEF VIDEO UGC (Veo 3) ---\nHook: "${v.video&&v.video.brief?v.video.brief.hook:''}"\n\n${vidE}`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
+  a.download=`meli-${v.perfil.nombre.replace(/\s+/g,'-').toLowerCase()}.txt`;a.click();
+}
+
+function calcPrecio(){
+  const costo=parseFloat(document.getElementById('costoInput').value);
+  const mercado=parseFloat(document.getElementById('g-mercado').value)||0;
+  if(!costo||costo<=0){document.getElementById('precio-result').style.display='none';document.getElementById('precio-empty').style.display='block';document.getElementById('goto-comp-banner').style.display='none';gData.pventa=0;return;}
+  document.getElementById('precio-result').style.display='block';document.getElementById('precio-empty').style.display='none';
+  const pC=+document.getElementById('s-comision').value/100,pE=+document.getElementById('s-envio').value/100,pP=+document.getElementById('s-publicidad').value/100,pPr=+document.getElementById('s-promo').value/100,pI=+document.getElementById('s-iva').value/100,pG=+document.getElementById('s-ganancia').value/100;
+  const pventa=Math.round(costo/(1-pC-pE-pP-pPr-pI-pG));gData.pventa=pventa;
+  const comAbs=Math.round(pventa*pC),envAbs=Math.round(pventa*pE),pubAbs=Math.round(pventa*pP),proAbs=Math.round(pventa*pPr),ivaAbs=Math.round(pventa*pI);
+  const costosTot=costo+comAbs+envAbs+pubAbs+proAbs+ivaAbs,ganAbs=pventa-costosTot,margen=Math.round((ganAbs/pventa)*100);
+  document.getElementById('m-pventa').textContent='$'+pventa.toLocaleString('es-AR');
+  document.getElementById('m-ganancia').textContent='$'+ganAbs.toLocaleString('es-AR');
+  document.getElementById('m-margen').textContent=margen+'%';
+  document.getElementById('m-margen').className='metric-val'+(margen>=20?' green':margen>=10?' amber':' red');
+  document.getElementById('m-costos').textContent='$'+costosTot.toLocaleString('es-AR');
+  const rows=[['Costo proveedor','—','$'+Math.round(costo).toLocaleString('es-AR')],['Comisión Meli',Math.round(pC*100)+'%','$'+comAbs.toLocaleString('es-AR')],['Envío',Math.round(pE*100)+'%','$'+envAbs.toLocaleString('es-AR')],['Publicidad',Math.round(pP*100)+'%','$'+pubAbs.toLocaleString('es-AR')],['Promociones',Math.round(pPr*100)+'%','$'+proAbs.toLocaleString('es-AR')],['IVA comisión',Math.round(pI*100)+'%','$'+ivaAbs.toLocaleString('es-AR')],['TOTAL COSTOS','','$'+costosTot.toLocaleString('es-AR')],['GANANCIA NETA',margen+'%','$'+ganAbs.toLocaleString('es-AR')]];
+  document.getElementById('desglose-table').innerHTML='<tr><th>Concepto</th><th>%</th><th>ARS</th></tr>'+rows.map((r,i)=>`<tr class="${i>=6?'trow':''}"><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+  const warn=document.getElementById('precio-warning');warn.style.display='none';
+  let rec='';
+  if(mercado>0){const diff=Math.round(((pventa-mercado)/mercado)*100);
+    if(diff>15){warn.style.display='block';warn.innerHTML=`⚠ Tu precio ($${pventa.toLocaleString('es-AR')}) está <strong>${diff}% por encima</strong> del mercado ($${mercado.toLocaleString('es-AR')}).`;
+      rec=`Precio supera el mercado en ${diff}%.\n\n1. Bajá ganancia al ${Math.max(10,+document.getElementById('s-ganancia').value-10)}%\n2. Buscá proveedor más barato\n3. Diferenciá con mejor contenido\n\nPrecio sugerido: $${Math.round(mercado*0.95).toLocaleString('es-AR')}`;}
+    else if(diff<-10){rec=`Precio ${Math.abs(diff)}% bajo el mercado — podés subir.\n\nLanzamiento: $${Math.round(mercado*0.92).toLocaleString('es-AR')}\nObjetivo: $${Math.round(mercado*0.97).toLocaleString('es-AR')}`;}
+    else{rec=`Precio bien posicionado (${diff>0?'+':''}${diff}% vs mercado).\n\n— Lanzá a $${Math.round(pventa*0.93).toLocaleString('es-AR')} los primeros 7 días\n— Subí a $${pventa.toLocaleString('es-AR')} con 3+ reseñas`;}
+  }else{rec=`Precio calculado: $${pventa.toLocaleString('es-AR')}\n\nAgregá el precio de mercado para recomendación de posicionamiento.`;}
+  document.getElementById('recomendacion-text').textContent=rec;
+  document.getElementById('goto-comp-banner').style.display='flex';
+}
+
+async function runCompetencia(){
+  const prod=document.getElementById('comp-prod').value.trim(),cat=document.getElementById('comp-cat').value,precio=document.getElementById('comp-precio').value;
+  if(!prod){alert('Ingresá el producto.');return;}
+  document.getElementById('btn-comp').disabled=true;document.getElementById('prog-comp').style.display='block';document.getElementById('pf-comp').style.width='50%';document.getElementById('comp-result').innerHTML='';
+  const prompt=`Sos analista de mercado para MercadoLibre Argentina, dropshipping.
+Producto: "${prod}" Categoría: ${cat||'no especificada'}${precio?` Precio: $${precio} ARS`:''}
+SOLO JSON: {"nivel_competencia":"alto|medio|bajo","explicacion_nivel":"[1 oración]","precio_promedio_estimado":N,"precio_minimo_estimado":N,"precio_maximo_estimado":N,"perfil_competidor_tipico":"[2 oraciones]","diferenciadores":[{"titulo":"[dif]","descripcion":"[cómo aplicarlo]"},{"titulo":"...","descripcion":"..."},{"titulo":"...","descripcion":"..."}],"keywords_sugeridas":["kw1","kw2","kw3","kw4","kw5"],"riesgos":["[riesgo 1]","[riesgo 2]"],"oportunidad":"[1 párrafo]"}`;
+  try{
+    const raw=await callClaude(prompt);
+    const data=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderComp(data,precio);document.getElementById('goto-launch-banner').style.display='flex';
+  }catch(e){document.getElementById('comp-result').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog-comp').style.display='none';document.getElementById('btn-comp').disabled=false;
+}
+
+function renderComp(d,miPrecio){
+  const c=document.getElementById('comp-result');
+  const nc=d.nivel_competencia;
+  const nC={'alto':'#A32D2D','medio':'#854F0B','bajo':gData.green||'#0F6E56'}[nc]||'#0F6E56';
+  const nB={'alto':'#FCEBEB','medio':'#FAEEDA','bajo':'#E1F5EE'}[nc]||'#E1F5EE';
+  let pA='';
+  if(miPrecio){const mp=parseFloat(miPrecio),diff=Math.round(((mp-d.precio_promedio_estimado)/d.precio_promedio_estimado)*100);
+    pA=`<div style="padding:7px 11px;border-radius:var(--radius);background:${Math.abs(diff)>15?'#FAEEDA':'#E1F5EE'};color:${Math.abs(diff)>15?'#633806':'#085041'};font-size:12px;margin-bottom:9px"><strong>Tu precio vs. mercado:</strong> $${mp.toLocaleString('es-AR')} está ${diff>0?'+':''}${diff}% vs. promedio ($${d.precio_promedio_estimado.toLocaleString('es-AR')})</div>`;}
+  c.innerHTML=`
+  <div class="card"><div class="card-hd"><i class="ti ti-chart-bar"></i><span>Nivel de competencia</span><span style="margin-left:auto;font-size:11px;padding:2px 9px;border-radius:20px;background:${nB};color:${nC};font-weight:600">${nc}</span></div>
+    ${pA}<div style="font-size:12px;color:var(--text2);margin-bottom:9px">${d.explicacion_nivel}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
+      <div style="background:var(--bg2);padding:7px;border-radius:var(--radius);text-align:center"><div style="font-size:10px;color:var(--text2)">Mínimo</div><div style="font-size:15px;font-weight:600">$${d.precio_minimo_estimado.toLocaleString('es-AR')}</div></div>
+      <div style="background:#E1F5EE;padding:7px;border-radius:var(--radius);text-align:center"><div style="font-size:10px;color:#0F6E56">Promedio</div><div style="font-size:15px;font-weight:600;color:#085041">$${d.precio_promedio_estimado.toLocaleString('es-AR')}</div></div>
+      <div style="background:var(--bg2);padding:7px;border-radius:var(--radius);text-align:center"><div style="font-size:10px;color:var(--text2)">Máximo</div><div style="font-size:15px;font-weight:600">$${d.precio_maximo_estimado.toLocaleString('es-AR')}</div></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-hd"><i class="ti ti-trophy"></i><span>Diferenciadores</span></div>${d.diferenciadores.map(df=>`<div style="margin-bottom:7px"><div style="font-size:12px;font-weight:600">${df.titulo}</div><div style="font-size:12px;color:var(--text2)">${df.descripcion}</div></div>`).join('')}</div>
+  <div class="card"><div class="card-hd"><i class="ti ti-search"></i><span>Keywords</span></div><div>${d.keywords_sugeridas.map(k=>`<span class="tag" onclick="copyText('${k}')">${k}</span>`).join('')}</div></div>
+  <div class="card"><div class="card-hd"><i class="ti ti-bulb"></i><span>Oportunidad</span></div><div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:7px">${d.oportunidad}</div>${d.riesgos.map(r=>`<div style="font-size:11px;color:#854F0B;display:flex;gap:5px;margin-top:3px"><i class="ti ti-alert-circle" style="font-size:12px;flex-shrink:0;margin-top:1px"></i>${r}</div>`).join('')}</div>`;
+}
+
+async function runFaq(){
+  const prod=document.getElementById('faq-prod').value.trim(),perfil=document.getElementById('faq-perfil').value.trim(),objecion=document.getElementById('faq-objecion').value.trim();
+  if(!prod){alert('Ingresá el producto.');return;}
+  document.getElementById('btn-faq').disabled=true;document.getElementById('prog-faq').style.display='block';document.getElementById('pf-faq').style.width='50%';document.getElementById('faq-result').innerHTML='';
+  const prompt=`Sos vendedor experto en MercadoLibre Argentina.
+Producto: "${prod}" Perfil: ${perfil||'comprador general'} Objeción: ${objecion||'calidad'}
+10 preguntas reales con respuestas ideales. SOLO JSON:
+{"faqs":[{"pregunta":"[como la escribiría un comprador]","respuesta":"[clara, honesta, rioplatense, máx 3 oraciones]","categoria":"envio|calidad|uso|garantia|pago|stock|otro"},...10 items]}`;
+  try{
+    const raw=await callClaude(prompt);
+    const data=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderFaq(data);
+  }catch(e){document.getElementById('faq-result').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog-faq').style.display='none';document.getElementById('btn-faq').disabled=false;
+}
+
+function renderFaq(data){
+  const c=document.getElementById('faq-result');
+  const cC={envio:'#185FA5',calidad:'#0F6E56',uso:'#854F0B',garantia:'#993556',pago:'#534AB7',stock:'#993C1D',otro:'#5F5E5A'};
+  const cB={envio:'#E6F1FB',calidad:'#E1F5EE',uso:'#FAEEDA',garantia:'#FBEAF0',pago:'#EEEDFE',stock:'#FAECE7',otro:'#F1EFE8'};
+  c.innerHTML=data.faqs.map(f=>`<div class="faq-item">
+    <div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:3px">
+      <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:${cB[f.categoria]||cB.otro};color:${cC[f.categoria]||cC.otro};flex-shrink:0;margin-top:1px">${f.categoria}</span>
+      <div class="faq-q">${f.pregunta}</div>
+    </div>
+    <div class="faq-a">${f.respuesta}</div>
+    <div class="faq-copy" onclick="copyText('${f.respuesta.replace(/'/g,"\\'").replace(/\n/g,' ')}')"><i class="ti ti-copy" style="font-size:11px"></i> Copiar respuesta</div>
+  </div>`).join('');
+}
+
+async function runLanzamiento(){
+  const prod=document.getElementById('launch-prod').value.trim(),cat=document.getElementById('launch-cat').value,precio=document.getElementById('launch-precio').value,tipo=document.getElementById('launch-tipo').value;
+  if(!prod){alert('Ingresá el producto.');return;}
+  document.getElementById('btn-launch').disabled=true;document.getElementById('prog-launch').style.display='block';document.getElementById('pf-launch').style.width='50%';document.getElementById('launch-result').innerHTML='';
+  const prompt=`Sos consultor de dropshipping en MercadoLibre Argentina.
+Producto: "${prod}" Categoría: ${cat||'general'} Precio: ${precio?'$'+precio+' ARS':'no definido'} Tipo: ${tipo}
+Plan 30 días. SOLO JSON:
+{"tipo_recomendado":"Clásica|Premium","motivo_tipo":"[1 oración]","fases":[{"fase":"Días 1-7","titulo":"[nombre]","acciones":["[acción 1]","[acción 2]","[acción 3]"],"objetivo":"[objetivo]","metrica":"[qué medir]"},{"fase":"Días 8-15","titulo":"...","acciones":["...","...","..."],"objetivo":"...","metrica":"..."},{"fase":"Días 16-30","titulo":"...","acciones":["...","...","..."],"objetivo":"...","metrica":"..."}],"estrategia_resenas":"[cómo conseguir primeras reseñas — ético]","alertas":["[alerta 1]","[alerta 2]","[alerta 3]"],"kpis":["[KPI con número]","[KPI 2]","[KPI 3]"]}`;
+  try{
+    const raw=await callClaude(prompt);
+    const data=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    renderLanzamiento(data);
+  }catch(e){document.getElementById('launch-result').innerHTML=`<div style="color:red;font-size:13px">Error: ${e.message}</div>`;}
+  document.getElementById('prog-launch').style.display='none';document.getElementById('btn-launch').disabled=false;
+}
+
+function renderLanzamiento(d){
+  const c=document.getElementById('launch-result');
+  c.innerHTML=`<div class="card"><div class="card-hd"><i class="ti ti-award"></i><span>Tipo recomendado</span><span style="margin-left:auto;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--green-bg);color:var(--green-text);font-weight:600">${d.tipo_recomendado}</span></div><div style="font-size:12px;color:var(--text2)">${d.motivo_tipo}</div></div>
+  ${d.fases.map((f,i)=>`<div class="card"><div class="card-hd"><div style="width:22px;height:22px;border-radius:50%;background:var(--green-bg);color:var(--green-dark);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div><span>${f.fase} — ${f.titulo}</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:5px"><strong>Objetivo:</strong> ${f.objetivo}</div>
+    ${f.acciones.map(a=>`<div style="font-size:12px;color:var(--text2);padding:2px 0;display:flex;gap:5px"><i class="ti ti-arrow-right" style="font-size:12px;color:var(--green);flex-shrink:0;margin-top:1px"></i>${a}</div>`).join('')}
+    <div style="font-size:11px;color:var(--text3);margin-top:5px"><i class="ti ti-chart-line" style="font-size:11px"></i> ${f.metrica}</div></div>`).join('')}
+  <div class="card"><div class="card-hd"><i class="ti ti-star"></i><span>Estrategia para primeras reseñas</span></div><div style="font-size:12px;color:var(--text2);line-height:1.7">${d.estrategia_resenas}</div></div>
+  <div class="card"><div class="card-hd"><i class="ti ti-target"></i><span>KPIs</span></div>${d.kpis.map(k=>`<div style="font-size:12px;color:var(--text2);padding:2px 0;display:flex;gap:5px"><i class="ti ti-point" style="font-size:12px;color:var(--green);flex-shrink:0;margin-top:1px"></i>${k}</div>`).join('')}</div>
+  <div class="card"><div class="card-hd"><i class="ti ti-alert-triangle"></i><span>Señales de alerta</span></div>${d.alertas.map(a=>`<div style="font-size:12px;color:#854F0B;padding:2px 0;display:flex;gap:5px"><i class="ti ti-alert-circle" style="font-size:12px;flex-shrink:0;margin-top:1px"></i>${a}</div>`).join('')}</div>`;
+}
+
+const chkItems=[
+  {id:'t1',titulo:'Título entre 50-60 caracteres',desc:'Contá los caracteres exactos. Meli limita a 60.',badge:'obligatorio',grupo:'Título'},
+  {id:'t2',titulo:'Palabra clave principal al inicio',desc:'Los primeros 30 caracteres tienen más peso en el algoritmo.',badge:'obligatorio',grupo:'Título'},
+  {id:'t3',titulo:'Sin palabras prohibidas',desc:'No usar: oferta, gratis, mejor, único, !, %.',badge:'obligatorio',grupo:'Título'},
+  {id:'i1',titulo:'12 imágenes cargadas',desc:'Aprovechá el máximo. Más imágenes = mejor ranking.',badge:'importante',grupo:'Imágenes'},
+  {id:'i2',titulo:'Primera imagen fondo blanco',desc:'Requisito de Meli. Sin logos ni texto.',badge:'obligatorio',grupo:'Imágenes'},
+  {id:'i3',titulo:'Al menos una imagen en uso',desc:'Producto siendo usado por una persona real.',badge:'importante',grupo:'Imágenes'},
+  {id:'i4',titulo:'Imágenes de al menos 800x800px',desc:'1200x1200 recomendado para que el zoom funcione.',badge:'importante',grupo:'Imágenes'},
+  {id:'d1',titulo:'Descripción con +300 palabras',desc:'Las publicaciones largas convierten mejor.',badge:'importante',grupo:'Descripción'},
+  {id:'d2',titulo:'Sin errores de ortografía',desc:'Los errores reducen la confianza del comprador.',badge:'importante',grupo:'Descripción'},
+  {id:'d3',titulo:'Especificaciones técnicas incluidas',desc:'Medidas, materiales, colores, compatibilidad.',badge:'obligatorio',grupo:'Descripción'},
+  {id:'d4',titulo:'Sin datos de contacto',desc:'Meli penaliza teléfonos, emails o redes sociales.',badge:'obligatorio',grupo:'Descripción'},
+  {id:'p1',titulo:'Precio competitivo vs. mercado',desc:'Verificá que estés dentro del rango antes de publicar.',badge:'obligatorio',grupo:'Precio'},
+  {id:'p2',titulo:'Clásica vs. Premium decidido',desc:'Premium tiene más visibilidad pero mayor comisión.',badge:'importante',grupo:'Precio'},
+  {id:'p3',titulo:'Stock cargado correctamente',desc:'Mínimo 5 unidades para evitar pausas automáticas.',badge:'importante',grupo:'Precio'},
+  {id:'c1',titulo:'Categoría correcta',desc:'Una categoría incorrecta reduce la visibilidad drásticamente.',badge:'obligatorio',grupo:'Configuración'},
+  {id:'c2',titulo:'Atributos completados',desc:'Marca, modelo, material, color — todo suma al ranking.',badge:'importante',grupo:'Configuración'},
+  {id:'c3',titulo:'Garantía configurada',desc:'Aunque sean 30 días, genera confianza.',badge:'recomendado',grupo:'Configuración'},
+  {id:'c4',titulo:'Preguntas frecuentes preparadas',desc:'Respuestas listas mejoran el tiempo y la reputación.',badge:'recomendado',grupo:'Configuración'},
+];
+let chkState={};chkItems.forEach(i=>chkState[i.id]=false);
+
+function renderChecklist(){
+  const c=document.getElementById('checklist-container');
+  const grupos=[...new Set(chkItems.map(i=>i.grupo))];
+  c.innerHTML=grupos.map(g=>{
+    const items=chkItems.filter(i=>i.grupo===g);
+    return `<div style="margin-bottom:.875rem"><div style="font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">${g}</div>
+    <div class="card" style="padding:4px 1rem">${items.map(item=>`
+      <div class="chk-item" onclick="toggleChk('${item.id}')">
+        <div class="chk-box${chkState[item.id]?' checked':''}">${chkState[item.id]?'<i class="ti ti-check"></i>':''}</div>
+        <div><div class="chk-title${chkState[item.id]?' checked':''}">${item.titulo}<span class="cb-${item.badge}">${item.badge}</span></div>
+        <div class="chk-desc">${item.desc}</div></div>
+      </div>`).join('')}
+    </div></div>`;
+  }).join('');
+  updateScore();
+}
+
+function toggleChk(id){chkState[id]=!chkState[id];renderChecklist();}
+
+function updateScore(){
+  const total=chkItems.length,done=Object.values(chkState).filter(Boolean).length,pct=Math.round((done/total)*100);
+  document.getElementById('chk-score').textContent=done+'/'+total;
+  document.getElementById('chk-bar').style.width=pct+'%';
+  const st=document.getElementById('chk-status');
+  if(pct===100){st.textContent='✓ Listo para publicar';st.style.color='var(--green-dark)';}
+  else if(pct>=60){st.textContent='Casi listo';st.style.color='#854F0B';}
+  else{st.textContent='En progreso';st.style.color='var(--text2)';}
+}
+
+function resetChecklist(){chkItems.forEach(i=>chkState[i.id]=false);renderChecklist();}
+
+function exportChecklist(){
+  const done=chkItems.filter(i=>chkState[i.id]),pending=chkItems.filter(i=>!chkState[i.id]);
+  const txt=`CHECKLIST MERCADOLIBRE\n${'='.repeat(30)}\nCOMPLETADOS (${done.length}):\n${done.map(i=>`✓ ${i.titulo}`).join('\n')}\n\nPENDIENTES (${pending.length}):\n${pending.map(i=>`○ [${i.badge.toUpperCase()}] ${i.titulo}\n  ${i.desc}`).join('\n\n')}`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));a.download='checklist-meli.txt';a.click();
+}
+
+renderChecklist();
+</script>
+</body>
+</html>
